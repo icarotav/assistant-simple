@@ -23,7 +23,7 @@ var Common = (function() {
   //    }],
   //    "children: [{other similarly structured JSON objects...}, {...}]
   //  }
-  function buildDomElementFromJson(domJson) {
+  function buildDomElementFromJson(domJson) {  
     // Create a DOM element with the given tag name
     var element = document.createElement(domJson.tagName);
 

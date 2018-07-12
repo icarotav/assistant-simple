@@ -160,6 +160,28 @@ var ConversationPanel = (function() {
 
     textArray.forEach(function(currentText) {
       if (currentText) {
+        var msg = [{
+          // <div class='message-inner'>
+          'tagName': 'div',
+          'classNames': ['message-inner'],
+          'children': [{
+            // <p>{messageText}</p>
+            'tagName': 'p',
+            'text': currentText
+          }]
+        }]
+        if (messageArray.length === 0) {
+          msg.splice(0, 0, {
+            // <div>
+            'tagName': 'div',
+            'children': [{
+              // <small class="text-muted">{date now()}</p>
+              'classNames': ['text-muted'],
+              'tagName': 'small',
+              'text': new Date().toLocaleString("pt-BR")
+            }]
+          })
+        }
         var messageJson = {
           // <div class='segments'>
           'tagName': 'div',
@@ -167,30 +189,10 @@ var ConversationPanel = (function() {
           'children': [{
             // <div class='from-user/from-watson latest'>
             'tagName': 'div',
-            'classNames': [(isUser ? 'from-user' : 'from-watson'), 'latest', ((messageArray.length === 0) ? 'top' : 'sub')],
-            'children': [
-              {
-                // <div>
-                'tagName': 'div',
-                'children': [{
-                  // <small class="text-muted">{date}</p>
-                  'classNames': ['text-muted'],
-                  'tagName': 'small',
-                  'text': new Date().toLocaleString("pt-BR")
-                }]
-              },
-              {
-              // <div class='message-inner'>
-              'tagName': 'div',
-              'classNames': ['message-inner'],
-              'children': [{
-                // <p>{messageText}</p>
-                'tagName': 'p',
-                'text': currentText
-              }]
-            }]
+            'classNames': [(isUser ? 'from-user' : 'from-watson'), 'latest', 'top'], //top ou sub
+            'children': msg
           }]
-        };
+        }
         messageArray.push(Common.buildDomElement(messageJson));
       }
     });
