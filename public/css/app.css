@@ -74,11 +74,10 @@ div {
 
 .chat-column {
   height: 90%;
-  padding: 0.9375rem 0 0.625rem 0;
-  margin: auto;
+  padding: 0;
+  margin: 0;
   text-align: left;
-  max-width: 25rem;
-  min-width: 9.375rem;
+  width: 100%;
 }
 
 #scrollingChat {
@@ -324,10 +323,6 @@ html{
 @media only screen and (max-width: 600px) {
   html {
     font-size: 14px;
-  }
-
-  .chat-column {
-    padding-top: 4rem;
   }
 
   #payload-column {

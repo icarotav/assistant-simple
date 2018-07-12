@@ -1,5 +1,3 @@
-// The ConversationPanel module is designed to handle
-// all display and behaviors of the conversation column of the app.
 /* eslint no-unused-vars: "off" */
 /* global Api: true, Common: true*/
 
@@ -23,10 +21,9 @@ var ConversationPanel = (function() {
     inputKeyDown: inputKeyDown
   };
 
-  // Initialize the module
   function init() {
     chatUpdateSetup();
-    Api.sendRequest( '', null );
+    Api.sendRequest('', null);
     setupInputBox();
   }
   // Set up callbacks on payload setters in Api module
@@ -75,7 +72,7 @@ var ConversationPanel = (function() {
       if (input.value === '') {
         // If the input box is empty, remove the underline
         input.classList.remove('underline');
-        input.setAttribute('style', 'width:' + '100%');
+        input.setAttribute('style', 'width: 100%');
         input.style.width = '100%';
       } else {
         // otherwise, adjust the dummy text to match, and then set the width of
@@ -171,7 +168,18 @@ var ConversationPanel = (function() {
             // <div class='from-user/from-watson latest'>
             'tagName': 'div',
             'classNames': [(isUser ? 'from-user' : 'from-watson'), 'latest', ((messageArray.length === 0) ? 'top' : 'sub')],
-            'children': [{
+            'children': [
+              {
+                // <div>
+                'tagName': 'div',
+                'children': [{
+                  // <small class="text-muted">{date}</p>
+                  'classNames': ['text-muted'],
+                  'tagName': 'small',
+                  'text': new Date().toLocaleString("pt-BR")
+                }]
+              },
+              {
               // <div class='message-inner'>
               'tagName': 'div',
               'classNames': ['message-inner'],
@@ -190,15 +198,9 @@ var ConversationPanel = (function() {
     return messageArray;
   }
 
-  // Scroll to the bottom of the chat window (to the most recent messages)
-  // Note: this method will bring the most recent user message into view,
-  //   even if the most recent message is from Watson.
-  //   This is done so that the "context" of the conversation is maintained in the view,
-  //   even if the Watson message is long.
   function scrollToChatBottom() {
     var scrollingChat = document.querySelector('#scrollingChat');
 
-    // Scroll to the latest message sent by the user
     var scrollEl = scrollingChat.querySelector(settings.selectors.fromUser
             + settings.selectors.latest);
     if (scrollEl) {
@@ -206,21 +208,16 @@ var ConversationPanel = (function() {
     }
   }
 
-  // Handles the submission of input
   function inputKeyDown(event, inputBox) {
-    // Submit on enter key, dis-allowing blank messages
     if (event.keyCode === 13 && inputBox.value) {
-      // Retrieve the context from the previous server response
       var context;
       var latestResponse = Api.getResponsePayload();
       if (latestResponse) {
         context = latestResponse.context;
       }
 
-      // Send the user message
       Api.sendRequest(inputBox.value, context);
 
-      // Clear input box for further messages
       inputBox.value = '';
       Common.fireEvent(inputBox, 'input');
     }
